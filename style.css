@@ -235,7 +235,7 @@ h1, h2, h3, h4, h5, h6 {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    margin-top: 2rem;
+    align-items: stretch; /* todas las cards tendrán la misma altura */
 }
 
 .service-card {
@@ -246,6 +246,9 @@ h1, h2, h3, h4, h5, h6 {
     transition: var(--transition);
     position: relative;
     overflow: hidden;
+    display: flex;                  /* convertimos la card en flexbox */
+    flex-direction: column;         /* apila elementos de arriba a abajo */
+    justify-content: space-between; /* empuja botones al fondo */
 }
 
 .service-card:hover {
@@ -300,6 +303,13 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: space-between;
     gap: 0.75rem;
 }
+
+/* Botones solo en las tarjetas de servicios */
+.service-buttons .btn {
+    padding: 8px 16px;   /* más finos */
+    font-size: 0.85rem;  /* opcional, un poco más pequeño */
+}
+
 
 .btn {
     padding: 10px 20px;
