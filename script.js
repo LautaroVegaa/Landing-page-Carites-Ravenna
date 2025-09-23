@@ -2,55 +2,144 @@
 // Service data
 // =====================
 const services = [
-    {
-        id: 1,
-        title: 'Massaggio Decontratturante',
-        description: 'Massaggio terapeutico per sciogliere tensioni e contratture muscolari.',
-        duration: '60 min',
-        price: 45,
-        isPromo: false
-    },
-    {
-        id: 2,
-        title: 'Massaggio Linfodrenante',
-        description: 'Trattamento per stimolare il sistema linfatico e ridurre gonfiori.',
-        duration: '50 min',
-        price: 40,
-        isPromo: true
-    },
-    {
-        id: 3,
-        title: 'Trattamento Anticellulite',
-        description: 'Trattamento specifico per contrastare gli inestetismi della cellulite.',
-        duration: '60 min',
-        price: 50,
-        isPromo: false
-    },
-    {
-        id: 4,
-        title: 'Pulizia Viso Profonda',
-        description: 'Trattamento viso completo per una pelle luminosa e purificata.',
-        duration: '75 min',
-        price: 55,
-        isPromo: false
-    },
-    {
-        id: 5,
-        title: 'Manicure e Smalto',
-        description: 'Cura completa delle unghie con applicazione smalto di alta qualità.',
-        duration: '45 min',
-        price: 25,
-        isPromo: true
-    },
-    {
-        id: 6,
-        title: 'Trattamento Rilassante',
-        description: 'Massaggio total body per rilassare corpo e mente.',
-        duration: '90 min',
-        price: 65,
-        isPromo: false
-    }
+  {
+    id: 1,
+    title: "Massaggio Rilassante Corpo Intero",
+    description: "Massaggio total body per ridurre stress e tensioni.",
+    duration: "60 min",
+    price: 25,
+    isPromo: false
+  },
+  {
+    id: 2,
+    title: "Massaggio Decontratturante",
+    description: "Trattamento mirato per sciogliere contratture muscolari.",
+    duration: "45 min",
+    price: 30,
+    isPromo: false
+  },
+  {
+    id: 3,
+    title: "Massaggio Linfodrenante",
+    description: "Stimola il sistema linfatico e riduce gonfiori e ritenzione.",
+    duration: "60 min",
+    price: 30,
+    isPromo: false
+  },
+  {
+    id: 4,
+    title: "Massaggio Modellante Anticellulite",
+    description: "Trattamento anticellulite con tecniche mirate e drenanti.",
+    duration: "60 min",
+    price: 30,
+    isPromo: false
+  },
+  {
+    id: 5,
+    title: "Massaggio Sportivo",
+    description: "Ideale per preparazione e recupero muscolare.",
+    duration: "45 min",
+    price: 30,
+    isPromo: false
+  },
+  {
+    id: 6,
+    title: "Massaggio con Pietre Calde",
+    description: "Calore e manualità per rilassamento profondo.",
+    duration: "60 min",
+    price: 25,
+    isPromo: false
+  },
+  {
+    id: 7,
+    title: "Massaggio Gravidanza",
+    description: "Massaggio dolce e sicuro per alleviare tensioni in gravidanza.",
+    duration: "60 min",
+    price: 30,
+    isPromo: false
+  },
+  {
+    id: 8,
+    title: "Massaggio Anti-Stress",
+    description: "Riflessologia plantare + massaggio testa per rilassare corpo e mente.",
+    duration: "60 min",
+    price: 25,
+    isPromo: false
+  },
+  {
+    id: 9,
+    title: "Massaggio Kairós '7 in 1'",
+    description: "Trattamento multisensoriale con aromaterapia, pietre calde e shiatsu.",
+    duration: "90 min",
+    price: 50,
+    isPromo: true
+  },
+  {
+    id: 10,
+    title: "Massaggio Relax Totale '4 in 1'",
+    description: "Rilassante, Reiki, Shiatsu e Riflessologia in un'unica esperienza.",
+    duration: "90 min",
+    price: 40,
+    isPromo: true
+  },
+  {
+    id: 11,
+    title: "Riflessologia Plantare",
+    description: "Tecnica sui punti riflessi dei piedi per riequilibrare corpo e mente.",
+    duration: "60 min",
+    price: 25,
+    isPromo: false
+  },
+  {
+    id: 12,
+    title: "Reiki Usui",
+    description: "Tecnica energetica per rilassamento profondo ed equilibrio interiore.",
+    duration: "60 min",
+    price: 25,
+    isPromo: false
+  },
+  {
+    id: 13,
+    title: "Massaggio Anti-Age Viso",
+    description: "Trattamento viso per tonificare e ringiovanire la pelle.",
+    duration: "45 min",
+    price: 20,
+    isPromo: false
+  },
+  {
+    id: 14,
+    title: "Massaggio Focalizzato",
+    description: "Trattamento specifico per una sola zona del corpo.",
+    duration: "30 min",
+    price: 15,
+    isPromo: false
+  },
+  {
+    id: 15,
+    title: "Pulizia Viso Profonda",
+    description: "Trattamento viso completo per pelle luminosa e purificata.",
+    duration: "75 min",
+    price: 55,
+    isPromo: false
+  },
+  {
+    id: 16,
+    title: "Manicure e Smalto",
+    description: "Cura unghie e applicazione smalto di qualità.",
+    duration: "45 min",
+    price: 25,
+    isPromo: false
+  },
+  {
+    id: 17,
+    title: "Pedicure Base",
+    description: "Cura dei piedi con trattamento estetico base.",
+    duration: "45 min",
+    price: 23,
+    isPromo: false
+  }
 ];
+
 
 // =====================
 // Cart functionality
