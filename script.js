@@ -394,28 +394,24 @@ function initPayPalButtons() {
   container.innerHTML = "";
 
   paypal.Buttons({
-    createOrder: async function(data, actions) {
-      const res = await fetch("http://localhost:5000/create-paypal-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items: cart })
-      });
-      const order = await res.json();
-      return order.id;
-    },
-    onApprove: async function(data, actions) {
-      const res = await fetch(`http://localhost:5000/capture-paypal-order/${data.orderID}`, {
-        method: "POST"
-      });
-      const capture = await res.json();
-      alert("✅ Pagamento completato con successo!");
-      
-      cart = [];
-      saveCart();
-      updateCartUI();
-      closeCartModal();
-    }
-  }).render("#paypal-button-container");
+  createOrder: async function(data, actions) {
+    const res = await fetch("http://localhost:5000/create-paypal-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ items: cart })
+    });
+    const order = await res.json();
+    return order.id;
+  },
+  onApprove: async function(data, actions) {
+    const res = await fetch(`http://localhost:5000/capture-paypal-order/${data.orderID}`, {
+      method: "POST"
+    });
+    const capture = await res.json();
+    alert("✅ Pagamento completato con successo!");
+  }
+}).render("#paypal-button-container");
+
 }
 
 

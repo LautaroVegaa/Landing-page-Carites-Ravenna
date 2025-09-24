@@ -1,63 +1,81 @@
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-const paypal = require("@paypal/paypal-server-sdk");
+// backend/server.js
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import fetch from "node-fetch";
+
+dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ==================
-// Stripe Checkout
-// ==================
-app.post("/create-stripe-session", async (req, res) => {
+// ======================
+// PayPal
+// ======================
+app.post("/create-paypal-order", async (req, res) => {
   try {
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      line_items: req.body.items.map(item => ({
-        price_data: {
-          currency: "eur",
-          product_data: { name: item.title },
-          unit_amount: item.price * 100, // céntimos
-        },
-        quantity: item.quantity,
-      })),
-      mode: "payment",
-      success_url: "http://localhost:3000/success",
-      cancel_url: "http://localhost:3000/cancel",
-    });
+    const { items } = req.body;
 
-    res.json({ url: session.url });
+    const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+    const accessToken = await generateAccessToken();
+
+    const order = await createOrder(total, accessToken);
+    res.json(order);
   } catch (err) {
-    console.error("Stripe error:", err);
-    res.status(500).json({ error: "Stripe session error" });
+    console.error(err);
+    res.status(500).send("Error creating PayPal order");
   }
 });
 
-// ==================
-// PayPal Checkout
-// ==================
+app.post("/capture-paypal-order/:orderID", async (req, res) => {
+  try {
+    const { orderID } = req.params;
+    const accessToken = await generateAccessToken();
 
-// Crear cliente PayPal
-const paypalClient = new paypal.core.Client({
-  clientCredentialsAuthCredentials: {
-    oAuthClientId: process.env.PAYPAL_CLIENT_ID,
-    oAuthClientSecret: process.env.PAYPAL_CLIENT_SECRET,
-  },
-  environment: "sandbox", // cambiar a "live" en producción
+    const response = await fetch(`https://api-m.sandbox.paypal.com/v2/checkout/orders/${orderID}/capture`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error capturing PayPal order");
+  }
 });
 
-app.post("/create-paypal-order", async (req, res) => {
-  const total = req.body.items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+// ======================
+// Helpers
+// ======================
+async function generateAccessToken() {
+  const auth = Buffer.from(`${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_CLIENT_SECRET}`).toString("base64");
+  const response = await fetch("https://api-m.sandbox.paypal.com/v1/oauth2/token", {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${auth}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: "grant_type=client_credentials",
+  });
 
-  try {
-    // Crear orden
-    const orderRequest = new paypal.orders.OrdersCreateRequest();
-    orderRequest.requestBody({
+  const data = await response.json();
+  return data.access_token;
+}
+
+async function createOrder(total, accessToken) {
+  const response = await fetch("https://api-m.sandbox.paypal.com/v2/checkout/orders", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({
       intent: "CAPTURE",
       purchase_units: [
         {
@@ -67,24 +85,15 @@ app.post("/create-paypal-order", async (req, res) => {
           },
         },
       ],
-    });
+    }),
+  });
 
-    // Ejecutar orden en PayPal
-    const response = await paypalClient.execute(orderRequest);
+  return response.json();
+}
 
-    // Buscar link de aprobación
-    const approveUrl = response.result.links.find(link => link.rel === "approve").href;
-    res.json({ url: approveUrl });
-  } catch (err) {
-    console.error("PayPal error:", err);
-    res.status(500).json({ error: "PayPal order error" });
-  }
-});
-
-// ==================
+// ======================
 // Start server
-// ==================
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
+// ======================
+app.listen(process.env.PORT, () => {
+  console.log(`Server running on http://localhost:${process.env.PORT}`);
 });
