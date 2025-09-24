@@ -666,6 +666,25 @@ h1, h2, h3, h4, h5, h6 {
     padding: 1.5rem;
 }
 
+/* Modal details (lista benefici) */
+#modal-details {
+    margin-top: 1rem;
+}
+
+#modal-details ul {
+    list-style: disc inside;
+    padding-left: 1rem;
+    margin-top: 0.5rem;
+    color: var(--dark-gray);
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+#modal-details li {
+    margin-bottom: 0.5rem;
+}
+
+
 .empty-cart {
     text-align: center;
     color: var(--gray);
