@@ -246,7 +246,11 @@ h1, h2, h3, h4, h5, h6 {
 /* Services Section */
 .services {
     padding: 100px 0;
-    background: var(--light-gray);
+    background: linear-gradient(
+        135deg, 
+        rgba(219, 39, 119, 0.1),   /* rosa suave */
+        rgba(91, 33, 182, 0.1)    /* violeta suave */
+    )
 }
 
 .services-grid {
@@ -381,6 +385,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Promotions Section */
 .promotions {
     padding: 100px 0;
+    background: linear-gradient(to bottom, #f5e9f7 0%, #ffffff 100%);
 }
 
 .promo-card {
@@ -460,7 +465,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Contact Section */
 .contact {
     padding: 100px 0;
-    background: var(--light-gray);
+    background: linear-gradient(to bottom, #ffffff 0%, #f3f4f6 100%);
 }
 
 .contact-grid {
