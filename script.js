@@ -517,13 +517,14 @@ document.addEventListener('DOMContentLoaded', function() {
 let currentServiceId = null;
 
 function openInfo(serviceId) {
-  const service = services.find(s => s.id === serviceId);
-  if (!service) return;
+const service = services.find(s => s.id === serviceId);
+if (!service) return;
 
-  document.getElementById("modal-title").textContent = service.title;
-  document.getElementById("modal-desc").textContent = service.description;
-  document.getElementById("modal-durata").textContent = service.duration;
-  document.getElementById("modal-prezzo").textContent = service.price;
+    document.getElementById("modal-title").textContent = service.title;
+    document.getElementById("modal-desc").textContent = service.description;
+    document.getElementById("modal-durata").textContent = service.duration;
+    document.getElementById("modal-prezzo").textContent = "€" + service.price;
+
 
   const imgEl = document.getElementById("modal-img");
 if (service.image) {

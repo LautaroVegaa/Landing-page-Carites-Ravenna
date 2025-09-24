@@ -197,15 +197,25 @@ h1, h2, h3, h4, h5, h6 {
 /* Hero Section */
 .hero {
     background: url("img/masaje-relajante.png") center center/cover no-repeat; /* fondo agregado */
-    color: var(--primary-violet);
+    color: var(--white);
     text-align: center;
     padding: 200px 0 180px;
     margin-top: 0px;
     position: relative; /* necesario si querés usar overlay en el futuro */
 }
 
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.10); /* sombra oscura semitransparente */
+    z-index: 0;
+}
+
 
 .hero-container {
+    position: relative;
+    z-index: 1;
     max-width: 800px;
     margin: 0 auto;
     padding: 0 20px;
@@ -215,13 +225,15 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 4rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .hero-subtitle {
-    font-size: 1.5rem;
+    color: var(rgba(255, 255, 255, 0.808));
+    font-size: 1.6rem;
+    font-weight: 600;
     margin-bottom: 2rem;
-    opacity: 0.9;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .hero-cta {
@@ -309,9 +321,10 @@ h1, h2, h3, h4, h5, h6 {
 
 
 .service-description {
-    color: var(--gray);
+    color: var(--dark-gray);
     margin-bottom: 1rem;
-    font-size: 0.95rem;
+    font-size: 1rem;
+    font-weight: 400;
 }
 
 .service-details {
@@ -322,7 +335,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .service-duration {
-    color: var(--gray);
+    color: var(--dark-gray);
+    font-size: 1;
+    font-weight: 500;
 }
 
 .service-price {
@@ -678,25 +693,61 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 4px 20px rgba(0,0,0,0.25);
 }
 
+#modal-desc {
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+    color: var(--dark-gray);
+}
+
+/* Durata y Prezzo (el texto fuerte) */
+.modal-body p strong {
+    font-weight: 700;
+    color: var(--dark-gray); /* mismo violeta de la página */
+}
+
+/* Valor del prezzo (el número + €) */
+#modal-prezzo {
+    color: var(--primary-pink);
+    font-weight: 700;
+}
+
+/* Hace que el valor se vea en bold */
+.highlight {
+    font-weight: 700;  
+}
 
 .modal-footer {
     text-align: center;
     margin-top: 1.5rem;
 }
 
+/* Contenedor de la lista */
 #modal-details ul {
-    list-style: disc inside;
-    padding-left: 1rem;
-    margin-top: 0.5rem;
-    color: var(--dark-gray);
-    line-height: 1.5;
-    font-size: 0.95rem;
+    list-style: none;                /* sacamos los bullets por defecto */
+    padding-left: 0;
+    margin-top: 1rem;
+    font-weight: 500;
 }
 
+/* Cada ítem */
 #modal-details li {
-    margin-bottom: 0.5rem;
+    position: relative;              /* para poder ubicar un ícono */
+    margin-bottom: 0.8rem;
+    padding-left: 1.8rem;            /* espacio para el icono */
+    line-height: 1.6;
+    color: var(--dark-gray);         /* mismo gris usado en textos */
+    font-size: 0.95rem;              /* un poquito más chico */
 }
 
+#modal-details li::before {
+    content: "•";                    /* cambia a "•" si preferís simple */
+    position: absolute;
+    left: 0;
+    top: 0.1rem;
+    color: var(--primary-violet);    /* en violeta para resaltar */
+    font-size: 1rem;
+    font-weight: bold;
+}
 
 .empty-cart {
     text-align: center;
