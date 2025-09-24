@@ -281,14 +281,15 @@ h1, h2, h3, h4, h5, h6 {
 .service-card.promo::before {
     content: 'PROMO';
     position: absolute;
-    top: 15px;
-    right: -30px;
+    top: 10px;
+    right: -35px;
     background: var(--primary-pink);
     color: var(--white);
     padding: 5px 40px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
     transform: rotate(45deg);
+    z-index: 1;
 }
 
 .service-title {
