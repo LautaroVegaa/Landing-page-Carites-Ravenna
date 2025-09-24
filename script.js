@@ -3,6 +3,7 @@
 // =====================
 const services = [
     { id: 1,  title: "Massaggio Rilassante Corpo Intero", description: "Massaggio total body per ridurre stress e tensioni.", duration: "60 min", price: 25, isPromo: false, category: "massaggi",
+        image: "img/massaggio-rilassante.png",
     details: [
     "Riduzione dello stress e dell'ansia - Il tocco lento e delicato stimola il sistema nervoso parasimpatico, favorendo calma mentale e rilascio di endorfine.",
     "Miglioramento della circolazione sanguigna - I movimenti fluidi aiutano a far fluire meglio il sangue, ossigenando i tessuti e nutrendo le cellule.",
@@ -12,6 +13,7 @@ const services = [
     ]
     },
     { id: 2,  title: "Massaggio Decontratturante", description: "Trattamento mirato per sciogliere contratture muscolari.", duration: "45 min", price: 30, isPromo: false, category: "massaggi",
+        image: "img/massaggio-descontractturante.png",
         details: [
     "Scioglimento delle contratture muscolari - Agisce in profondità sui punti tesi, liberando le fibre muscolari bloccate.",
     "Riduzione del dolore e delle infiammazioni - Migliora l'afflusso di sangue nella zona interessata, favorendo la guarigione.",
@@ -21,6 +23,7 @@ const services = [
     ]
     },
     { id: 3,  title: "Massaggio Linfodrenante", description: "Stimola il sistema linfatico e riduce gonfiori e ritenzione.", duration: "60 min", price: 30, isPromo: false, category: "massaggi",
+        image: "img/massaggio-linfodrenante.png",
         details: [
     "Riduzione di gonfiori e ritenzione idrica - Favorisce il drenaggio dei liquidi in eccesso, specialmente in gambe, caviglie e addome.",
     "Stimolazione del sistema linfatico - Migliora la capacità dell'organismo di eliminare tossine e scorie metaboliche.",
@@ -30,6 +33,7 @@ const services = [
     ]
     },
     { id: 4,  title: "Massaggio Modellante Anticellulite", description: "Trattamento anticellulite con tecniche mirate e drenanti.", duration: "60 min", price: 30, isPromo: false, category: "massaggi",
+        image: "img/massaggio-modellante-anticellulite.png",
     details: [
     "Riduzione della cellulite e pelle più liscia - Le tecniche mirate e gli strumenti in legno stimolano la microcircolazione, migliorando l'aspetto della pelle a 'buccia d'arancia'.",
     "Drenaggio dei liquidi in eccesso - Favorisce l'eliminazione di ristagni e gonfiori, specialmente nelle gambe e nelle zone soggette a ritenzione.",
@@ -39,6 +43,7 @@ const services = [
     ]
     },
     { id: 5,  title: "Massaggio Sportivo", description: "Ideale per preparazione e recupero muscolare.", duration: "45 min", price: 30, isPromo: false, category: "massaggi",
+        image: "img/massaggio-sportivo.png",
     details: [
     "Preparazione e recupero muscolare ottimali - Migliora l'elasticità e il tono muscolare prima dell'attività e accelera il recupero dopo lo sforzo.",
     "Riduzione di dolori e affaticamento - Aiuta a sciogliere acido lattico e tensioni accumulate, riducendo rigidità e indolenzimento.",
@@ -48,6 +53,7 @@ const services = [
     ]
     },
     { id: 6,  title: "Massaggio con Pietre Calde", description: "Calore e manualità per rilassamento profondo.", duration: "60 min", price: 25, isPromo: false, category: "massaggi",
+        image: "img/massaggio-pietre.png",
     details: [
     "Rilassamento profondo e immediato - Il calore penetra nei muscoli, sciogliendo tensioni più rapidamente rispetto a un massaggio tradizionale.",
     "Stimolazione della circolazione - La temperatura delle pietre favorisce la dilatazione dei vasi sanguigni, migliorando il flusso di sangue e ossigeno.",
@@ -57,6 +63,7 @@ const services = [
     ]
     },
     { id: 7,  title: "Massaggio Gravidanza", description: "Massaggio dolce e sicuro per alleviare tensioni in gravidanza.", duration: "60 min", price: 30, isPromo: false, category: "massaggi",
+        image: "img/massaggio-gravidanza.png",
     details: [
     "Alleviamento di dolori e tensioni muscolari - Riduce fastidi comuni come mal di schiena, dolori lombari e rigidità alle spalle.",
     "Riduzione di gonfiori a gambe e piedi - Favorisce la circolazione sanguigna e linfatica, diminuendo la ritenzione idrica.",
@@ -66,6 +73,7 @@ const services = [
     ]
     },
     { id: 8,  title: "Massaggio Anti-Stress", description: "Riflessologia plantare + massaggio testa per rilassare corpo e mente.", duration: "60 min", price: 25, isPromo: false, category: "massaggi",
+        image: "img/massaggio-anti-stress.png",
     details: [
     "Rilassamento globale corpo-mente - La riflessologia agisce in profondità sul corpo attraverso i piedi, mentre il massaggio alla testa scioglie tensioni mentali ed emotive.",
     "Stimolazione energetica completa - Il lavoro sui punti riflessi e sul cranio favorisce un riequilibrio dell'energia vitale in tutto l'organismo.",
@@ -75,6 +83,7 @@ const services = [
     ]
     },
     { id: 9,  title: "Massaggio Kairós '7 in 1'", description: "Trattamento multisensoriale con aromaterapia, pietre calde e shiatsu.", duration: "90 min", price: 50, isPromo: true, category: "massaggi",
+        image: "img/massaggio-kairos.png",
     details: [
     "Immersione sensoriale totale - L'aromaterapia, la musica binaurale e il massaggiatore per occhi creano un'esperienza multisensoriale unica che favorisce rilassamento profondo.",
     "Rilascio di tensioni fisiche e mentali - Le tecniche manuali e con strumenti (gua sha, shiatsu, pietre calde) sciolgono rigidità muscolari e ristagni energetici.",
@@ -84,6 +93,7 @@ const services = [
     ]
     },
     { id: 10, title: "Massaggio Relax Totale '4 in 1'", description: "Rilassante, Reiki, Shiatsu e Riflessologia in un'unica esperienza.", duration: "90 min", price: 40, isPromo: true, category: "massaggi",
+        image: "img/massaggio-relax-totale.png",
     details: [
     "Esperienza di benessere completa - Unisce tecniche occidentali e orientali per agire su corpo, mente ed energia in un'unica seduta.",
     "Rilassamento profondo e riequilibrio energetico - Il massaggio rilassante scioglie tensioni muscolari, mentre Reiki e Shiatsu armonizzano il flusso vitale.",
@@ -93,6 +103,7 @@ const services = [
     ]
     },
     { id: 11, title: "Riflessologia Plantare", description: "Tecnica sui punti riflessi dei piedi per riequilibrare corpo e mente.", duration: "60 min", price: 25, isPromo: false, category: "massaggi",
+        image: "img/riflessologia-plantare.png",
     details: [
     "Stimolazione della circolazione sanguigna e linfatica - Migliora l'ossigenazione dei tessuti e favorisce l'eliminazione delle tossine.",
     "Riequilibrio degli organi e delle funzioni corporee - Agendo sui punti riflessi dei piedi, sostiene il corretto funzionamento di diversi sistemi del corpo.",
@@ -102,6 +113,7 @@ const services = [
     ]
     },
     { id: 12, title: "Reiki Usui", description: "Tecnica energetica per rilassamento profondo ed equilibrio interiore.", duration: "60 min", price: 25, isPromo: false, category: "massaggi",
+        image: "img/reiki-usui.png",
     details: [
     "Profondo rilassamento e riduzione dello stress - L'energia armonizza il sistema nervoso, favorendo calma interiore e serenità.",
     "Riequilibrio energetico - Aiuta a sbloccare e ristabilire il flusso naturale dell'energia vitale (Ki) in tutto il corpo.",
@@ -111,6 +123,7 @@ const services = [
     ]
     },
     { id: 13, title: "Massaggio Anti-Age Viso", description: "Trattamento viso per tonificare e ringiovanire la pelle.", duration: "45 min", price: 20, isPromo: false, category: "massaggi",
+        image: "img/massaggio-viso.png",
     details: [
     "Stimolazione della circolazione sanguigna del viso - Migliora l'apporto di ossigeno e nutrienti alla pelle, rendendola più luminosa.",
     "Tonificazione muscolare - Lavora sui muscoli facciali per mantenere elasticità e prevenire rilassamenti.",
@@ -120,6 +133,7 @@ const services = [
     ]
     },
     { id: 14, title: "Massaggio Focalizzato", description: "Trattamento specifico per una sola zona del corpo.", duration: "30 min", price: 15, isPromo: false, category: "massaggi",
+        image: "img/massaggio-focalizzato.png",
     details: [
     "Azione mirata su una zona specifica - Indicato per chi ha dolori localizzati come cervicale, schiena o gambe.",
     "Sollievo immediato - Interviene rapidamente sul disturbo riducendo dolore e rigidità.",
@@ -510,6 +524,18 @@ function openInfo(serviceId) {
   document.getElementById("modal-desc").textContent = service.description;
   document.getElementById("modal-durata").textContent = service.duration;
   document.getElementById("modal-prezzo").textContent = service.price;
+
+  const imgEl = document.getElementById("modal-img");
+if (service.image) {
+  imgEl.src = service.image;
+  imgEl.alt = service.title;
+  imgEl.style.display = "block";
+} else {
+  imgEl.removeAttribute("src");
+  imgEl.alt = "";
+  imgEl.style.display = "none";
+}
+
 
   currentServiceId = service.id;
 
