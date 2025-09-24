@@ -181,28 +181,38 @@
         </button>
     </div>
 
-    <!-- Cart Modal -->
-    <div class="modal-overlay" id="cart-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>Il Tuo Carrello</h3>
-                <button class="modal-close" id="close-cart">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div id="cart-items">
-                    <p class="empty-cart">Il carrello è vuoto</p>
-                </div>
-                <div class="cart-total" id="cart-total" style="display: none;">
-                    <strong>Totale: €<span id="total-amount">0</span></strong>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="checkout-btn" id="checkout-btn" style="display: none;">
-                    Prenota via WhatsApp
-                </button>
-            </div>
-        </div>
+  <!-- Cart Modal -->
+<div class="modal-overlay" id="cart-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Il Tuo Carrello</h3>
+      <button class="modal-close" id="close-cart">&times;</button>
     </div>
+    <div class="modal-body">
+      <div id="cart-items">
+        <p class="empty-cart">Il carrello è vuoto</p>
+      </div>
+      <div class="cart-total" id="cart-total" style="display: none;">
+        <strong>Totale: €<span id="total-amount">0</span></strong>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <!-- Stripe -->
+    <button class="checkout-btn stripe-btn" id="stripe-btn" onclick="checkoutStripe()" style="display:none;">
+    Paga con Carta (Stripe)
+    </button>
+
+
+      <!-- PayPal -->
+      <div id="paypal-button-container" style="display:none; margin-top: 10px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SDK de PayPal -->
+<script src="https://www.paypal.com/sdk/js?client-id=AeaqwB2hWTFiRR_2dNM857yYJOcvUqR4WGg4FolID-0uxuvlZMKcKkN8MfHwXbrgPFIJq2RSbeQq1fi4&currency=EUR"></script>
+
+
 
     <!-- JavaScript -->
     <script src="script.js"></script>

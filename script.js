@@ -168,7 +168,7 @@ const floatingCartCount = document.getElementById('floating-cart-count');
 const cartItems = document.getElementById('cart-items');
 const cartTotal = document.getElementById('cart-total');
 const totalAmount = document.getElementById('total-amount');
-const checkoutBtn = document.getElementById('checkout-btn');
+const stripeBtn = document.getElementById("stripe-btn");
 
 // =====================
 // Initialize
@@ -274,8 +274,6 @@ function initCartFunctionality() {
             closeCartModal();
         }
     });
-
-    checkoutBtn.addEventListener('click', checkout);
 }
 
 function addToCart(serviceId) {
@@ -364,18 +362,62 @@ function renderCartItems() {
     `).join('');
 }
 
+let paypalRendered = false; // 👈 flag global
+
 function updateCartTotal() {
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    totalAmount.textContent = total.toFixed(0);
-    
-    if (cart.length > 0) {
-        cartTotal.style.display = 'block';
-        checkoutBtn.style.display = 'block';
-    } else {
-        cartTotal.style.display = 'none';
-        checkoutBtn.style.display = 'none';
+  const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  totalAmount.textContent = total.toFixed(0);
+
+  if (cart.length > 0) {
+    cartTotal.style.display = 'block';
+    document.getElementById("stripe-btn").style.display = 'block';
+    document.getElementById("paypal-button-container").style.display = 'block';
+
+    // 👇 Renderiza PayPal SOLO la primera vez
+    if (!paypalRendered) {
+      initPayPalButtons();
+      paypalRendered = true;
     }
+
+  } else {
+    cartTotal.style.display = 'none';
+    document.getElementById("stripe-btn").style.display = 'none';
+    document.getElementById("paypal-button-container").style.display = 'none';
+  }
 }
+
+function initPayPalButtons() {
+  if (typeof paypal === "undefined") return;
+
+  // 👇 Limpia el contenedor antes de renderizar
+  const container = document.getElementById("paypal-button-container");
+  container.innerHTML = "";
+
+  paypal.Buttons({
+    createOrder: async function(data, actions) {
+      const res = await fetch("http://localhost:5000/create-paypal-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: cart })
+      });
+      const order = await res.json();
+      return order.id;
+    },
+    onApprove: async function(data, actions) {
+      const res = await fetch(`http://localhost:5000/capture-paypal-order/${data.orderID}`, {
+        method: "POST"
+      });
+      const capture = await res.json();
+      alert("✅ Pagamento completato con successo!");
+      
+      cart = [];
+      saveCart();
+      updateCartUI();
+      closeCartModal();
+    }
+  }).render("#paypal-button-container");
+}
+
 
 function openCart() {
     cartModal.classList.add('active');
@@ -387,27 +429,22 @@ function closeCartModal() {
     document.body.style.overflow = 'auto';
 }
 
-function checkout() {
-    if (cart.length === 0) return;
-    
-    let message = 'Ciao, vorrei prenotare i seguenti servizi:\n\n';
-    let total = 0;
-    
-    cart.forEach(item => {
-        message += `• ${item.title} (x${item.quantity}) - €${item.price * item.quantity}\n`;
-        total += item.price * item.quantity;
-    });
-    
-    message += `\nTotale: €${total}\n\nGrazie!`;
-    
-    const whatsappUrl = `https://wa.me/placeholder?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-    
-    cart = [];
-    saveCart();
-    updateCartUI();
-    closeCartModal();
+// =====================
+// Stripe Checkout
+// =====================
+async function checkoutStripe() {
+  if (cart.length === 0) return;
+
+  const response = await fetch("http://localhost:5000/create-stripe-session", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ items: cart }),
+  });
+
+  const data = await response.json();
+  window.location.href = data.url; // Redirige al checkout de Stripe
 }
+
 
 // =====================
 // WhatsApp link
@@ -526,15 +563,14 @@ if (!service) return;
     document.getElementById("modal-prezzo").textContent = "€" + service.price;
 
 
-  const imgEl = document.getElementById("modal-img");
+    const imgEl = document.getElementById("modal-img");
 if (service.image) {
-  imgEl.src = service.image;
-  imgEl.alt = service.title;
-  imgEl.style.display = "block";
+    imgEl.src = service.image;
+    imgEl.alt = service.title;
+    imgEl.style.display = "block";
 } else {
-  imgEl.removeAttribute("src");
-  imgEl.alt = "";
-  imgEl.style.display = "none";
+    imgEl.removeAttribute("src"); imgEl.alt = "";
+    imgEl.style.display = "none";
 }
 
 
