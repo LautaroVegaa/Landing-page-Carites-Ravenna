@@ -193,14 +193,18 @@ h1, h2, h3, h4, h5, h6 {
     transform: rotate(-45deg) translate(7px, -6px);
 }
 
+
 /* Hero Section */
 .hero {
-    background: var(--white);
+    background: url("img/masaje-relajante.png") center center/cover no-repeat; /* fondo agregado */
     color: var(--primary-violet);
     text-align: center;
-    padding: 150px 0 100px;
-    margin-top: 80px;
+    padding: 200px 0 180px;
+    margin-top: 0px;
+    position: relative; /* necesario si querés usar overlay en el futuro */
 }
+
+
 .hero-container {
     max-width: 800px;
     margin: 0 auto;
@@ -237,6 +241,7 @@ h1, h2, h3, h4, h5, h6 {
     transform: translateY(-2px);
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
 }
+
 
 /* Services Section */
 .services {
