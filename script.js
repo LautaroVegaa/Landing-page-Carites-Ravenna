@@ -115,24 +115,24 @@ function renderServices() {
     const card = document.createElement('div');
     card.className = `service-card ${service.isPromo ? 'promo' : ''}`;
     card.innerHTML = `
-      <h3 class="service-title">${service.title}</h3>
-      <p class="service-description">${service.description}</p>
-      <div class="service-details">
+    <h3 class="service-title">${service.title}</h3>
+    <p class="service-description">${service.description}</p>
+    <div class="service-details">
         <span class="service-duration">${service.duration}</span>
         <span class="service-price">€${service.price}</span>
-      </div>
-      <div class="service-buttons">
+    </div>
+    <div class="service-buttons">
         <button class="btn btn-primary" onclick="addToCart(${service.id})">Aggiungi al Carrello</button>
-        <a href="${generateWhatsAppLink(service.title)}" class="btn btn-secondary">Prenota Ora</a>
-      </div>
+        <button class="btn btn-secondary" onclick="openInfo(${service.id})">Maggiori Informazioni</button>
+    </div>
     `;
 
     if (service.category === "estetica") {
-      esteticaGrid.appendChild(card);
+    esteticaGrid.appendChild(card);
     } else {
-      massaggiGrid.appendChild(card);
+    massaggiGrid.appendChild(card);
     }
-  });
+});
 }
 
 // =====================
@@ -381,4 +381,53 @@ document.addEventListener('DOMContentLoaded', function() {
         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(el);
     });
+
+});
+
+// =====================
+// Info Modal 
+// =====================
+let currentServiceId = null;
+
+function openInfo(serviceId) {
+  const service = services.find(s => s.id === serviceId);
+  if (!service) return;
+
+  document.getElementById("modal-title").textContent = service.title;
+  document.getElementById("modal-desc").textContent = service.description;
+  document.getElementById("modal-durata").textContent = service.duration;
+  document.getElementById("modal-prezzo").textContent = service.price;
+
+  currentServiceId = service.id;
+
+  // 👇 en lugar de display:block
+  document.getElementById("info-modal").classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+function closeInfo() {
+  // 👇 en lugar de display:none
+  document.getElementById("info-modal").classList.remove("active");
+  document.body.style.overflow = "auto";
+  currentServiceId = null;
+}
+
+// Aggiungi al carrello dal modal
+document.getElementById("modal-add-cart").addEventListener("click", function() {
+  if (currentServiceId) {
+    addToCart(currentServiceId);
+    closeInfo();
+  }
+});
+
+// Chiudi cliccando fuori dal modal
+document.getElementById("info-modal").addEventListener("click", function(e) {
+  if (e.target === this) closeInfo();
+});
+
+// Chiudi con ESC
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape" && document.getElementById("info-modal").classList.contains("active")) {
+    closeInfo();
+  }
 });
