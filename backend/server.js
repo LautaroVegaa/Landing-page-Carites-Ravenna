@@ -10,7 +10,11 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(cors({
-  origin: "https://landing-page-carites-ravenna.vercel.app", // tu frontend en Vercel
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "https://landing-page-carites-ravenna.vercel.app"
+  ],
   methods: ["GET", "POST"]
 }));
 app.use(express.json());
@@ -44,7 +48,7 @@ app.post("/create-stripe-session", async (req, res) => {
       cancel_url: "https://landing-page-carites-ravenna.vercel.app/index.html",
     });
 
-    res.json({ url: session.url });
+    res.json({ url: session.url, id: session.id });
   } catch (err) {
     console.error("Error creando sesión Stripe:", err);
     res.status(500).send("Error creando sesión Stripe");
