@@ -362,18 +362,18 @@ function renderCartItems() {
     `).join('');
 }
 
-let paypalRendered = false; // 👈 flag global
+let paypalRendered = false; //  flag global
 
 function updateCartTotal() {
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  totalAmount.textContent = total.toFixed(0);
+  totalAmount.textContent = total.toFixed(2);
 
   if (cart.length > 0) {
     cartTotal.style.display = 'block';
     document.getElementById("stripe-btn").style.display = 'block';
     document.getElementById("paypal-button-container").style.display = 'block';
 
-    // 👇 Renderiza PayPal SOLO la primera vez
+    // Renderiza PayPal SOLO la primera vez
     if (!paypalRendered) {
       initPayPalButtons();
       paypalRendered = true;
@@ -389,44 +389,62 @@ function updateCartTotal() {
 function initPayPalButtons() {
   if (typeof paypal === "undefined") return;
 
-  // 👇 Limpia el contenedor antes de renderizar
+  //  Limpia el contenedor antes de renderizar
   const container = document.getElementById("paypal-button-container");
   container.innerHTML = "";
 
-  paypal.Buttons({
-  createOrder: async function(data, actions) {
-    const res = await fetch("https://carites-backend.onrender.com/create-paypal-order", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items: cart })
-    });
-    const order = await res.json();
-    return order.id;
-  },
+  const buttonConfig = {
+    style: {
+      layout: "vertical",
+      color: "gold",
+      shape: "rect",
+      label: "paypal"
+    },
+    createOrder: async function (data, actions) {
+      const res = await fetch("https://carites-backend.onrender.com/create-paypal-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: cart })
+      });
+      const order = await res.json();
+      return order.id;
+    },
+    onApprove: async function (data, actions) {
+      const res = await fetch(`https://carites-backend.onrender.com/capture-paypal-order/${data.orderID}`, {
+        method: "POST"
+      });
 
-  // PayPal Checkout
-onApprove: async function(data, actions) {
-  const res = await fetch(`https://carites-backend.onrender.com/capture-paypal-order/${data.orderID}`, {
-    method: "POST"
-  });
+      const paymentData = await res.json(); //  backend ya devuelve datos listos
 
-  const paymentData = await res.json(); // 👈 ya viene listo del backend
+      // Guardar en localStorage
+      localStorage.setItem("paymentData", JSON.stringify(paymentData));
 
-  // Guardar en localStorage
-  localStorage.setItem("paymentData", JSON.stringify(paymentData));
+      // Limpiar carrito
+      cart = [];
+      saveCart();
 
-  // Limpiar carrito
-  cart = [];
-  saveCart();
+      // Redirigir
+      window.location.href = "thank-you.html";
+    }
+  };
 
-  // Redirigir
-  window.location.href = "thank-you.html";
+  //  Botón PayPal (amarillo)
+  if (paypal.Buttons.isEligible({ fundingSource: paypal.FUNDING.PAYPAL })) {
+    paypal.Buttons({
+      ...buttonConfig,
+      fundingSource: paypal.FUNDING.PAYPAL
+    }).render("#paypal-button-container");
+  }
+
+  //  Botón Tarjeta (negro)
+  if (paypal.Buttons.isEligible({ fundingSource: paypal.FUNDING.CARD})) {
+    paypal.Buttons({
+      ...buttonConfig,
+      fundingSource: paypal.FUNDING.CARD
+    }).render("#paypal-button-container");
+  }
 }
 
-
-}).render("#paypal-button-container");
-
-}
 
 
 function openCart() {
