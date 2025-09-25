@@ -113,7 +113,7 @@ app.post("/capture-paypal-order/:orderID", async (req, res) => {
     const capture = data?.purchase_units?.[0]?.payments?.captures?.[0];
 
     res.json({
-      orderId: data.id,
+      orderId: data.id || capture?.id,
       status: data.status,
       email: data.payer?.email_address,
       date: new Date(),
