@@ -15,6 +15,57 @@ app.use(cors({
 app.use(express.json());
 
 // ======================
+// Stripe
+// ======================
+const Stripe = require("stripe");
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+
+// Crear sesión de pago
+app.post("/create-stripe-session", async (req, res) => {
+  try {
+    const { items } = req.body;
+
+    const lineItems = items.map(item => ({
+      price_data: {
+        currency: "eur",
+        product_data: {
+          name: item.title,
+        },
+        unit_amount: Math.round(item.price * 100), // Stripe usa centavos
+      },
+      quantity: item.quantity,
+    }));
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: lineItems,
+      mode: "payment",
+      success_url: "https://landing-page-carites-ravenna.vercel.app/thank-you.html?session_id={CHECKOUT_SESSION_ID}",
+      cancel_url: "https://landing-page-carites-ravenna.vercel.app/index.html",
+    });
+
+    res.json({ url: session.url });
+  } catch (err) {
+    console.error("Error creando sesión Stripe:", err);
+    res.status(500).send("Error creando sesión Stripe");
+  }
+});
+
+// Obtener detalles de la sesión
+app.get("/stripe-session/:id", async (req, res) => {
+  try {
+    const session = await stripe.checkout.sessions.retrieve(req.params.id, {
+      expand: ["customer", "payment_intent"],
+    });
+    res.json(session);
+  } catch (err) {
+    console.error("Error recuperando sesión Stripe:", err);
+    res.status(500).send("Error recuperando sesión Stripe");
+  }
+});
+
+
+// ======================
 // PayPal
 // ======================
 app.post("/create-paypal-order", async (req, res) => {
