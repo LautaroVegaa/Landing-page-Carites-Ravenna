@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento Completato - Grazie!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #e8d5ff 0%, #f0e6ff 50%, #f5f0ff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        .thank-you-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(139, 69, 199, 0.08);
+            max-width: 700px;
+            width: 100%;
+            overflow: hidden;
+            border: 1px solid rgba(139, 69, 199, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header Section */
+        .header-section {
+            text-align: center;
+            padding: 50px 40px 40px;
+            background: linear-gradient(135deg, #fafbff 0%, #f8faff 100%);
+            border-bottom: 1px solid #e2e8f0;
+            position: relative;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 32px;
+            box-shadow: 0 8px 24px rgba(34, 197, 94, 0.2);
+        }
+
+        .checkmark {
+            font-size: 32px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #8b45c7;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #64748b;
+            max-width: 450px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        /* Content Section */
+        .content-section {
+            padding: 40px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 24px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #8b45c7;
+            display: inline-block;
+        }
+
+        /* Payment Summary */
+        .payment-summary {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            padding-top: 16px;
+            margin-top: 8px;
+            border-top: 2px solid #e2e8f0;
+            font-weight: 600;
+        }
+
+        .summary-label {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .summary-value {
+            font-size: 14px;
+            color: #1e293b;
+            font-weight: 500;
+        }
+
+        .summary-row:last-child .summary-label,
+        .summary-row:last-child .summary-value {
+            font-size: 18px;
+            color: #8b45c7;
+            font-weight: 700;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #dcfce7;
+            color: #166534;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid #bbf7d0;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #22c55e;
+            border-radius: 50%;
+        }
+
+        /* Transaction Details */
+        .transaction-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .detail-group {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            transition: border-color 0.2s ease;
+        }
+
+        .detail-group:hover {
+            border-color: #8b45c7;
+        }
+
+        .detail-icon {
+            font-size: 16px;
+            margin-right: 8px;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .detail-value {
+            font-size: 15px;
+            color: #1e293b;
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        /* Services List */
+        .services-section {
+            margin-bottom: 32px;
+        }
+
+        .services-list {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .service-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .service-item:last-child {
+            border-bottom: none;
+        }
+
+        .service-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .service-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        .service-quantity {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .service-price {
+            font-size: 15px;
+            font-weight: 600;
+            color: #8b45c7;
+        }
+
+        .total-item {
+            background: #f8fafc;
+            border-top: 2px solid #8b45c7;
+            font-weight: 600;
+        }
+
+        .total-item .service-name {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .total-item .service-price {
+            font-size: 18px;
+        }
+
+        /* Actions Section */
+        .actions-section {
+            background: #f8fafc;
+            padding: 32px 40px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            min-width: 160px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8b45c7 0%, #a855f7 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(139, 69, 199, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #8b45c7;
+            border-color: #8b45c7;
+        }
+
+        .btn-secondary:hover {
+            background: #f8fafc;
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+            font-style: italic;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .thank-you-container {
+                margin: 10px;
+            }
+
+            .header-section {
+                padding: 40px 25px 30px;
+            }
+
+            .content-section {
+                padding: 30px 25px;
+            }
+
+            .actions-section {
+                padding: 25px;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .title {
+                font-size: 26px;
+            }
+
+            .transaction-details {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .service-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                padding: 16px;
+            }
+
+            .service-price {
+                align-self: flex-end;
+            }
+
+            .summary-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .summary-row:last-child {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-section {
+                padding: 30px 20px 25px;
+            }
+
+            .content-section {
+                padding: 25px 20px;
+            }
+
+            .actions-section {
+                padding: 20px;
+            }
+
+            .success-icon {
+                width: 70px;
+                height: 70px;
+            }
+
+            .checkmark {
+                font-size: 28px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="thank-you-container">
+        <!-- Header Section -->
+        <div class="header-section">
+            <div class="success-icon">
+                <div class="checkmark">✓</div>
+            </div>
+            
+            <h1 class="title">Pagamento Completato con Successo</h1>
+            <p class="subtitle">Grazie per aver scelto i nostri servizi. La tua prenotazione è stata confermata e riceverai a breve una email di conferma con tutti i dettagli.</p>
+        </div>
+        
+        <!-- Content Section -->
+        <div class="content-section">
+            <!-- Payment Summary -->
+            <div class="section-title">Riepilogo Ordine</div>
+            <div id="payment-summary" class="payment-summary">
+                <div class="loading-state">Caricamento dei dettagli dell'ordine...</div>
+            </div>
+            
+            <!-- Transaction Details -->
+            <div class="section-title">Dettagli Transazione</div>
+            <div id="transaction-details" class="transaction-details">
+                <div class="loading-state">Caricamento dettagli...</div>
+            </div>
+            
+            <!-- Services List -->
+            <div id="services-section" style="display: none;">
+                <div class="section-title">Servizi Acquistati</div>
+                <div id="services-list" class="services-list"></div>
+            </div>
+        </div>
+        
+        <!-- Actions Section -->
+        <div class="actions-section">
+            <a href="index.html" class="btn btn-primary">
+                ← Torna ai Servizi
+            </a>
+            <a href="https://wa.me/393123456789" target="_blank" class="btn btn-secondary">
+                📞 Contattaci su WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <script>
+document.addEventListener("DOMContentLoaded", async function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const sessionId = urlParams.get("session_id");
+
+  if (sessionId) {
+    // 🔹 Caso Stripe
+    try {
+      const res = await fetch(`https://carites-backend.onrender.com/stripe-session/${sessionId}`);
+      const session = await res.json();
+
+      const paymentData = {
+        orderId: session.id,
+        status: session.payment_status || "confermato",
+        paymentMethod: "Stripe",
+        email: session.customer_details?.email || "cliente@email.com",
+        date: new Date(),
+        total: (session.amount_total / 100) || 0,
+        items: JSON.parse(localStorage.getItem("caritesCart")) || []
+      };
+
+      localStorage.setItem("paymentData", JSON.stringify(paymentData));
+      localStorage.removeItem("caritesCart");
+
+      displayPaymentData(paymentData);
+    } catch (err) {
+      console.error("❌ Errore Stripe:", err);
+      loadPaymentData(); // fallback
+    }
+  } else {
+    // 🔹 Caso PayPal o default
+    loadPaymentData();
+  }
+
+  // Limpieza después de mostrar
+  setTimeout(() => {
+    cleanupStorage();
+  }, 2000);
+});
+
+function loadPaymentData() {
+  const paymentDataString = localStorage.getItem("paymentData");
+  if (paymentDataString) {
+    try {
+      const paymentData = JSON.parse(paymentDataString);
+      displayPaymentData(paymentData);
+    } catch (error) {
+      console.error("Errore nel caricamento:", error);
+      displayDefaultData();
+    }
+  } else {
+    displayDefaultData();
+  }
+}
+
+function displayPaymentData(data) {
+  displayPaymentSummary(data);
+  displayTransactionDetails(data);
+  displayServices(data);
+}
+
+function displayPaymentSummary(data) {
+  const summaryContainer = document.getElementById("payment-summary");
+  const total = data.total || calculateTotal(data.items || []);
+
+  summaryContainer.innerHTML = `
+    <div class="summary-row">
+      <div class="summary-label">
+        <span class="detail-icon">📧</span>
+        Email di conferma inviata a:
+      </div>
+      <div class="summary-value">${data.email || "cliente@email.com"}</div>
+    </div>
+    <div class="summary-row">
+      <div class="summary-label">
+        <span class="detail-icon">✅</span>
+        Stato pagamento:
+      </div>
+      <div class="summary-value">
+        <span class="status-indicator">
+          <span class="status-dot"></span>
+          ${data.status || "Confermato"}
+        </span>
+      </div>
+    </div>
+    <div class="summary-row">
+      <div class="summary-label">Importo totale pagato:</div>
+      <div class="summary-value">€${parseFloat(total).toFixed(2)}</div>
+    </div>
+  `;
+}
+
+function displayTransactionDetails(data) {
+  const detailsContainer = document.getElementById("transaction-details");
+  const currentDate = new Date();
+
+  detailsContainer.innerHTML = `
+    <div class="detail-group">
+      <div class="detail-label">
+        <span class="detail-icon">🧾</span>
+        ID Ordine
+      </div>
+      <div class="detail-value">${data.orderId || generateOrderId()}</div>
+    </div>
+
+    <div class="detail-group">
+      <div class="detail-label">
+        <span class="detail-icon">📅</span>
+        Data e Ora
+      </div>
+      <div class="detail-value">${formatDateTime(data.date || currentDate)}</div>
+    </div>
+
+    <div class="detail-group">
+      <div class="detail-label">
+        <span class="detail-icon">💳</span>
+        Metodo di Pagamento
+      </div>
+      <div class="detail-value">${data.paymentMethod || "Carta di Credito"}</div>
+    </div>
+  `;
+}
+
+function displayServices(data) {
+  if (!data.items || data.items.length === 0) return;
+
+  const servicesSection = document.getElementById("services-section");
+  const servicesList = document.getElementById("services-list");
+
+  let servicesHTML = "";
+  let total = 0;
+
+  data.items.forEach(item => {
+    const itemTotal = (item.price || 0) * (item.quantity || 1);
+    total += itemTotal;
+
+    servicesHTML += `
+      <div class="service-item">
+        <div class="service-info">
+          <div class="service-name">${item.title || item.name || "Servizio"}</div>
+          <div class="service-quantity">Quantità: ${item.quantity || 1}</div>
+        </div>
+        <div class="service-price">€${itemTotal.toFixed(2)}</div>
+      </div>
+    `;
+  });
+
+  // Totale finale
+  servicesHTML += `
+    <div class="service-item total-item">
+      <div class="service-info">
+        <div class="service-name">Totale</div>
+      </div>
+      <div class="service-price">€${(data.total || total).toFixed(2)}</div>
+    </div>
+  `;
+
+  servicesList.innerHTML = servicesHTML;
+  servicesSection.style.display = "block";
+}
+
+function displayDefaultData() {
+  const defaultData = {
+    orderId: generateOrderId(),
+    date: new Date(),
+    status: "Confermato",
+    paymentMethod: "Carta di Credito",
+    email: "cliente@email.com",
+    total: 99.99,
+    items: [
+      { title: "Consulenza Professionale", quantity: 1, price: 99.99 }
+    ]
+  };
+  displayPaymentData(defaultData);
+}
+
+function generateOrderId() {
+  const timestamp = Date.now().toString(36);
+  const randomStr = Math.random().toString(36).substr(2, 4);
+  return `ORD${timestamp}${randomStr}`.toUpperCase();
+}
+
+function formatDateTime(date) {
+  const d = new Date(date);
+  return d.toLocaleString("it-IT", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+
+function calculateTotal(items) {
+  return items.reduce((total, item) => {
+    return total + ((item.price || 0) * (item.quantity || 1));
+  }, 0);
+}
+
+function cleanupStorage() {
+  localStorage.removeItem("paymentData");
+  localStorage.removeItem("caritesCart");
+  localStorage.removeItem("cartTotal");
+  console.log("Storage pulito automaticamente");
+}
+</script>
+
+</body>
+</html>

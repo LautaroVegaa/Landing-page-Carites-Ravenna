@@ -403,13 +403,36 @@ function initPayPalButtons() {
     const order = await res.json();
     return order.id;
   },
+
   onApprove: async function(data, actions) {
-    const res = await fetch(`https://carites-backend.onrender.com/capture-paypal-order/${data.orderID}`, {
-      method: "POST"
-    });
-    const capture = await res.json();
-    alert("✅ Pagamento completato con successo!");
-  }
+  const res = await fetch(`https://carites-backend.onrender.com/capture-paypal-order/${data.orderID}`, {
+    method: "POST"
+  });
+  const capture = await res.json();
+
+  // Armo los datos del pago
+  const paymentData = {
+  orderId: capture.id || capture.purchase_units?.[0]?.payments?.captures?.[0]?.id,
+  status: capture.status || capture.purchase_units?.[0]?.payments?.captures?.[0]?.status,
+  paymentMethod: "PayPal",
+  email: capture?.payer?.email_address || "cliente@email.com",
+  date: new Date(),
+  total: capture.purchase_units?.[0]?.payments?.captures?.[0]?.amount?.value || 0,
+  items: cart
+};
+
+
+  // Guardo en localStorage
+  localStorage.setItem("paymentData", JSON.stringify(paymentData));
+
+  // Limpio carrito
+  cart = [];
+  saveCart();
+
+  // Redirijo a la página de gracias
+  window.location.href = "thank-you.html";
+}
+
 }).render("#paypal-button-container");
 
 }
@@ -428,6 +451,9 @@ function closeCartModal() {
 // =====================
 // Stripe Checkout
 // =====================
+// =====================
+// Stripe Checkout
+// =====================
 async function checkoutStripe() {
   if (cart.length === 0) return;
 
@@ -438,7 +464,22 @@ async function checkoutStripe() {
   });
 
   const data = await response.json();
-  window.location.href = data.url; // Redirige al checkout de Stripe
+
+  // Guardo datos previos al checkout (para thank-you.html)
+  const paymentData = {
+    orderId: data.id || "STRIPE_SESSION",
+    status: "pending",
+    paymentMethod: "Stripe",
+    email: "cliente@email.com", // Stripe nos da el real en la sesión, lo pisamos después
+    date: new Date(),
+    total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+    items: cart
+  };
+
+  localStorage.setItem("paymentData", JSON.stringify(paymentData));
+
+  // Redirige al checkout de Stripe
+  window.location.href = data.url;
 }
 
 
