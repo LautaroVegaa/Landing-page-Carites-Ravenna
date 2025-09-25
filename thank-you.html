@@ -469,14 +469,15 @@ document.addEventListener("DOMContentLoaded", async function() {
       const session = await res.json();
 
       const paymentData = {
-        orderId: session.id,
-        status: session.payment_status || "confermato",
-        paymentMethod: "Stripe",
-        email: session.customer_details?.email || "cliente@email.com",
-        date: new Date(),
-        total: (session.amount_total / 100) || 0,
-        items: JSON.parse(localStorage.getItem("caritesCart")) || []
-      };
+  orderId: session.orderId,
+  status: session.status || "confermato",
+  paymentMethod: session.paymentMethod || "Stripe",
+  email: session.email || "cliente@email.com",
+  date: session.date || new Date(),
+  total: session.total || 0,
+  items: JSON.parse(localStorage.getItem("caritesCart")) || []
+};
+
 
       localStorage.setItem("paymentData", JSON.stringify(paymentData));
       localStorage.removeItem("caritesCart");
