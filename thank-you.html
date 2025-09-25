@@ -493,9 +493,8 @@ document.addEventListener("DOMContentLoaded", async function() {
   }
 
   // Limpieza después de mostrar
-  setTimeout(() => {
-    cleanupStorage();
-  }, 2000);
+  window.addEventListener("beforeunload", cleanupStorage);
+
 });
 
 function loadPaymentData() {

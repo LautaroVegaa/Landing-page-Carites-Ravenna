@@ -409,24 +409,20 @@ onApprove: async function(data, actions) {
   const res = await fetch(`https://carites-backend.onrender.com/capture-paypal-order/${data.orderID}`, {
     method: "POST"
   });
-  const capture = await res.json();
 
-  // Usamos directamente lo que devuelve el backend
-  const paymentData = {
-    orderId: capture.orderId,
-    status: capture.status,
-    paymentMethod: "PayPal",
-    email: capture.email || null,   // ✅ email real del backend
-    date: capture.date || new Date(),
-    total: capture.total || 0,
-    items: cart
-  };
+  const paymentData = await res.json(); // 👈 ya viene listo del backend
 
+  // Guardar en localStorage
   localStorage.setItem("paymentData", JSON.stringify(paymentData));
+
+  // Limpiar carrito
   cart = [];
   saveCart();
+
+  // Redirigir
   window.location.href = "thank-you.html";
 }
+
 
 }).render("#paypal-button-container");
 
