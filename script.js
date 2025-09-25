@@ -404,32 +404,27 @@ function initPayPalButtons() {
     return order.id;
   },
 
-  onApprove: async function(data, actions) {
+  // PayPal Checkout
+onApprove: async function(data, actions) {
   const res = await fetch(`https://carites-backend.onrender.com/capture-paypal-order/${data.orderID}`, {
     method: "POST"
   });
   const capture = await res.json();
 
-  // Armo los datos del pago
+  // Usamos directamente lo que devuelve el backend
   const paymentData = {
-  orderId: capture.id || capture.purchase_units?.[0]?.payments?.captures?.[0]?.id,
-  status: capture.status || capture.purchase_units?.[0]?.payments?.captures?.[0]?.status,
-  paymentMethod: "PayPal",
-   email: capture?.payer?.email_address || null,
-  date: new Date(),
-  total: capture.purchase_units?.[0]?.payments?.captures?.[0]?.amount?.value || 0,
-  items: cart
-};
+    orderId: capture.orderId,
+    status: capture.status,
+    paymentMethod: "PayPal",
+    email: capture.email || null,   // ✅ email real del backend
+    date: capture.date || new Date(),
+    total: capture.total || 0,
+    items: cart
+  };
 
-
-  // Guardo en localStorage
   localStorage.setItem("paymentData", JSON.stringify(paymentData));
-
-  // Limpio carrito
   cart = [];
   saveCart();
-
-  // Redirijo a la página de gracias
   window.location.href = "thank-you.html";
 }
 
