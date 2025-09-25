@@ -395,7 +395,7 @@ function initPayPalButtons() {
 
   paypal.Buttons({
   createOrder: async function(data, actions) {
-    const res = await fetch("http://localhost:5000/create-paypal-order", {
+    const res = await fetch("https://carites-backend.onrender.com/create-paypal-order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ items: cart })
@@ -404,7 +404,7 @@ function initPayPalButtons() {
     return order.id;
   },
   onApprove: async function(data, actions) {
-    const res = await fetch(`http://localhost:5000/capture-paypal-order/${data.orderID}`, {
+    const res = await fetch(`https://carites-backend.onrender.com/capture-paypal-order/${data.orderID}`, {
       method: "POST"
     });
     const capture = await res.json();
@@ -431,7 +431,7 @@ function closeCartModal() {
 async function checkoutStripe() {
   if (cart.length === 0) return;
 
-  const response = await fetch("http://localhost:5000/create-stripe-session", {
+  const response = await fetch("https://carites-backend.onrender.com/create-stripe-session", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ items: cart }),

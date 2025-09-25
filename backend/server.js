@@ -8,6 +8,10 @@ dotenv.config();
 
 const app = express();
 app.use(cors());
+app.use(cors({
+  origin: "https://landing-page-carites-ravenna.vercel.app", // tu frontend en Vercel
+  methods: ["GET", "POST"]
+}));
 app.use(express.json());
 
 // ======================
