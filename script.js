@@ -415,7 +415,7 @@ function initPayPalButtons() {
   orderId: capture.id || capture.purchase_units?.[0]?.payments?.captures?.[0]?.id,
   status: capture.status || capture.purchase_units?.[0]?.payments?.captures?.[0]?.status,
   paymentMethod: "PayPal",
-  email: capture?.payer?.email_address || "cliente@email.com",
+   email: capture?.payer?.email_address || null,
   date: new Date(),
   total: capture.purchase_units?.[0]?.payments?.captures?.[0]?.amount?.value || 0,
   items: cart
@@ -451,9 +451,6 @@ function closeCartModal() {
 // =====================
 // Stripe Checkout
 // =====================
-// =====================
-// Stripe Checkout
-// =====================
 async function checkoutStripe() {
   if (cart.length === 0) return;
 
@@ -470,7 +467,7 @@ async function checkoutStripe() {
     orderId: data.id || "STRIPE_SESSION",
     status: "pending",
     paymentMethod: "Stripe",
-    email: "cliente@email.com", // Stripe nos da el real en la sesión, lo pisamos después
+    email: null,
     date: new Date(),
     total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
     items: cart
