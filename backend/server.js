@@ -95,6 +95,11 @@ async function createOrder(total, accessToken) {
 // Start server
 // ======================
 const PORT = process.env.PORT || 5000;
+// Ruta de prueba
+app.get("/", (req, res) => {
+  res.send("✅ Backend Carites funcionando en Render 🚀");
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
