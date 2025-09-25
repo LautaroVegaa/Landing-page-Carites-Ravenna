@@ -362,7 +362,7 @@ function renderCartItems() {
     `).join('');
 }
 
-let paypalRendered = false; // flag global
+let paypalRendered = false; // 👈 flag global
 
 function updateCartTotal() {
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -373,7 +373,7 @@ function updateCartTotal() {
     document.getElementById("stripe-btn").style.display = 'block';
     document.getElementById("paypal-button-container").style.display = 'block';
 
-    //  Renderiza PayPal SOLO la primera vez
+    // 👇 Renderiza PayPal SOLO la primera vez
     if (!paypalRendered) {
       initPayPalButtons();
       paypalRendered = true;
@@ -389,7 +389,7 @@ function updateCartTotal() {
 function initPayPalButtons() {
   if (typeof paypal === "undefined") return;
 
-  // Limpia el contenedor antes de renderizar
+  // 👇 Limpia el contenedor antes de renderizar
   const container = document.getElementById("paypal-button-container");
   container.innerHTML = "";
 
@@ -409,24 +409,20 @@ onApprove: async function(data, actions) {
   const res = await fetch(`https://carites-backend.onrender.com/capture-paypal-order/${data.orderID}`, {
     method: "POST"
   });
-  const capture = await res.json();
 
-  // Usamos directamente lo que devuelve el backend
-  const paymentData = {
-    orderId: capture.orderId,
-    status: capture.status,
-    paymentMethod: "PayPal",
-    email: capture.email || null,   // email real del backend
-    date: capture.date || new Date(),
-    total: capture.total || 0,
-    items: cart
-  };
+  const paymentData = await res.json(); // 👈 ya viene listo del backend
 
+  // Guardar en localStorage
   localStorage.setItem("paymentData", JSON.stringify(paymentData));
+
+  // Limpiar carrito
   cart = [];
   saveCart();
+
+  // Redirigir
   window.location.href = "thank-you.html";
 }
+
 
 }).render("#paypal-button-container");
 
