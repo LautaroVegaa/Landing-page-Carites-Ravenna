@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const fetch = require("node-fetch");
+const Stripe = require("stripe");
 
 dotenv.config();
 
@@ -17,7 +18,6 @@ app.use(express.json());
 // ======================
 // Stripe
 // ======================
-const Stripe = require("stripe");
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 // Crear sesión de pago
@@ -31,7 +31,7 @@ app.post("/create-stripe-session", async (req, res) => {
         product_data: {
           name: item.title,
         },
-        unit_amount: Math.round(item.price * 100), // Stripe usa centavos
+        unit_amount: Math.round(item.price * 100),
       },
       quantity: item.quantity,
     }));
@@ -51,13 +51,21 @@ app.post("/create-stripe-session", async (req, res) => {
   }
 });
 
-// Obtener detalles de la sesión
+// Obtener detalles de la sesión (datos del cliente)
 app.get("/stripe-session/:id", async (req, res) => {
   try {
     const session = await stripe.checkout.sessions.retrieve(req.params.id, {
       expand: ["customer", "payment_intent"],
     });
-    res.json(session);
+
+    res.json({
+      orderId: session.id,
+      status: session.payment_status,
+      email: session.customer_details?.email,
+      date: new Date(),
+      total: session.amount_total / 100,
+      paymentMethod: "Carta di Credito"
+    });
   } catch (err) {
     console.error("Error recuperando sesión Stripe:", err);
     res.status(500).send("Error recuperando sesión Stripe");
@@ -75,8 +83,8 @@ app.post("/create-paypal-order", async (req, res) => {
     const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     const accessToken = await generateAccessToken();
-
     const order = await createOrder(total, accessToken);
+
     res.json(order);
   } catch (err) {
     console.error(err);
@@ -98,7 +106,16 @@ app.post("/capture-paypal-order/:orderID", async (req, res) => {
     });
 
     const data = await response.json();
-    res.json(data);
+    const capture = data?.purchase_units?.[0]?.payments?.captures?.[0];
+
+    res.json({
+      orderId: data.id,
+      status: data.status,
+      email: data.payer?.email_address,
+      date: new Date(),
+      total: capture?.amount?.value,
+      paymentMethod: "PayPal"
+    });
   } catch (err) {
     console.error(err);
     res.status(500).send("Error capturing PayPal order");
@@ -150,7 +167,6 @@ async function createOrder(total, accessToken) {
 // Start server
 // ======================
 const PORT = process.env.PORT || 5000;
-// Ruta de prueba
 app.get("/", (req, res) => {
   res.send("✅ Backend Carites funcionando en Render 🚀");
 });
